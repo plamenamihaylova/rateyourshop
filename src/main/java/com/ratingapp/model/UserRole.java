@@ -27,5 +27,5 @@ public class UserRole {
     @NonNull
     @NotNull
     @Column(name = "user_role_name")
-    private Roles name;
+    private String name;
 }

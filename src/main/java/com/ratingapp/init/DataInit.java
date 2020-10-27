@@ -1,7 +1,6 @@
 package com.ratingapp.init;
 
 import com.ratingapp.model.*;
-import com.ratingapp.repository.UserRepository;
 import com.ratingapp.service.CategoryService;
 import com.ratingapp.service.RatingService;
 import com.ratingapp.service.UserRoleService;
@@ -18,13 +17,16 @@ import java.util.List;
 @Slf4j
 public class DataInit implements CommandLineRunner{
 
-    private RatingService ratingService;
-    private CategoryService categoryService;
-    private UserRoleService userRoleService;
-    private UserService userService;
+    private final RatingService ratingService;
+    private final CategoryService categoryService;
+    private final UserRoleService userRoleService;
+    private final UserService userService;
 
     @Autowired
-    public DataInit(RatingService ratingService, CategoryService categoryService, UserRoleService userRoleService, UserService userService){
+    public DataInit(RatingService ratingService,
+                    CategoryService categoryService,
+                    UserRoleService userRoleService,
+                    UserService userService){
         this.ratingService = ratingService;
         this.categoryService = categoryService;
         this.userRoleService = userRoleService;
@@ -34,62 +36,61 @@ public class DataInit implements CommandLineRunner{
     @Override
     public void run(String... args) throws Exception {
         List<Rating> ratings = Arrays.asList(
-                new Rating[]{
-                        new Rating(1),
-                        new Rating(2),
-                        new Rating(3),
-                        new Rating(4),
-                        new Rating(5)
-                }
-        );
+                new Rating(1),
+                new Rating(2),
+                new Rating(3),
+                new Rating(4),
+                new Rating(5));
         if (ratingService.count() == 0){
-            ratings.stream().forEach(rating -> ratingService.createRating(rating));
+            ratings.forEach(ratingService::createRating);
         }
 
         List<Category> defaultCategories = Arrays.asList(
-                new Category[]{
-                        new Category("Food"),
-                        new Category("Furniture"),
-                        new Category("Home utilities"),
-                        new Category("Technical supplies"),
-                        new Category("Computers"),
-                        new Category("Phone accessories"),
-                        new Category("Book store"),
-                        new Category("Shoes"),
-                        new Category("Clothes"),
-                        new Category("Online Service"),
-                        new Category("Online Course"),
-                        new Category("Course"),
-                        new Category("Games"),
-                        new Category("Jewelry"),
-
-                }
-        );
+                new Category("Food"),
+                new Category("Furniture"),
+                new Category("Home utilities"),
+                new Category("Technical supplies"),
+                new Category("Computers"),
+                new Category("Phone accessories"),
+                new Category("Book store"),
+                new Category("Shoes"),
+                new Category("Clothes"),
+                new Category("Online Service"),
+                new Category("Online Course"),
+                new Category("Course"),
+                new Category("Games"),
+                new Category("Jewelry"));
         if (categoryService.count() == 0){
-            defaultCategories.stream().forEach(category -> categoryService.createCategory(category));
+            defaultCategories.forEach(categoryService::createCategory);
         }
 
         List<UserRole> defaultUserRoles = Arrays.asList(
-                new UserRole[]{
-                        new UserRole(Roles.ADMIN),
-                        new UserRole(Roles.REGISTERED),
-                        new UserRole(Roles.ANONYMOUS)
-                }
-        );
+                new UserRole(Roles.ADMIN.toString()),
+                new UserRole(Roles.REGISTERED.toString()),
+                new UserRole(Roles.ANONYMOUS.toString()));
         if (userRoleService.count() == 0){
-            defaultUserRoles.stream().forEach(userRole -> userRoleService.createUserRole(userRole));
+            defaultUserRoles.forEach(userRoleService::createUserRole);
         }
 
         List<User> defaultUsers = Arrays.asList(
-                new User[]{
-                        new User("john", "john.smith@gmail.com","https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png", userRoleService.findByName(Roles.ADMIN)),
-                        new User("stan", "stan.satan@gmail.com","https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png", userRoleService.findByName(Roles.REGISTERED)),
-                        new User("sam", "sam.smith@gmail.com","https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png", userRoleService.findByName(Roles.ANONYMOUS)),
-                        new User("jenifer", "jenifer.wood@gmail.com","https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png", userRoleService.findByName(Roles.REGISTERED)),
-                }
-        );
+                new User("john",
+                        "john.smith@gmail.com",
+                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
+                        userRoleService.findByName(Roles.ADMIN.toString())),
+                new User("stan",
+                        "stan.satan@gmail.com",
+                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
+                        userRoleService.findByName(Roles.REGISTERED.toString())),
+                new User("sam",
+                        "sam.smith@gmail.com",
+                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
+                        userRoleService.findByName(Roles.ANONYMOUS.toString())),
+                new User("jenifer",
+                        "jenifer.wood@gmail.com",
+                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
+                        userRoleService.findByName(Roles.REGISTERED.toString())));
         if (userService.count() == 0){
-            defaultUsers.stream().forEach(user -> userService.createUser(user));
+            defaultUsers.forEach(userService::createUser);
         }
     }
 }

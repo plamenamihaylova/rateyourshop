@@ -1,6 +1,5 @@
 package com.ratingapp.exception;
 
-import com.ratingapp.model.Shop;
 import lombok.*;
 import org.springframework.validation.Errors;
 

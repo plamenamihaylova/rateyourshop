@@ -9,7 +9,7 @@ public interface CategoryService {
 
     List<Category> getAllCategories();
     Category findById(Long id);
-    Category createCategory(Category category);
     Category findByName(String name);
+    Category createCategory(Category category);
     Long count();
 }

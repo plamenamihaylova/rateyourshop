@@ -27,7 +27,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> getAllShops() {
+    public List<Shop> findAllShops() {
         return shopRepository.findAll();
     }
 

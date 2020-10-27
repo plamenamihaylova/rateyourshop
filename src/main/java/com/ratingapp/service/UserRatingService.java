@@ -8,7 +8,7 @@ import com.ratingapp.model.UserRating;
 import java.util.List;
 
 public interface UserRatingService {
-    List<UserRating> getAllUserRatings();
+    List<UserRating> findAllUserRatings();
     UserRating findById(Long id);
     List<UserRating> findByShop(Shop shop);
     List<UserRating> findByRating(Rating rating);

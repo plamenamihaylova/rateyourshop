@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.springframework.boot.CommandLineRunner;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,10 +40,6 @@ public class UserRating {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-//    @OneToOne(targetEntity = Comment.class, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "comment_id", nullable = false)
-//    private Comment comment;
-
     @NonNull
     @NotNull
     @Size(min = 20, max = 2048)
@@ -57,10 +52,8 @@ public class UserRating {
     @Column(name = "receipt")
     private String receipt;
 
-
     @Column(name = "picture")
     private String picture;
-
 
     @PastOrPresent
     @Column(name = "date_created")
@@ -69,6 +62,5 @@ public class UserRating {
     @PastOrPresent
     @Column(name = "date_modified")
     private LocalDateTime modified = LocalDateTime.now();
-
 
 }

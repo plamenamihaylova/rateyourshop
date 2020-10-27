@@ -23,7 +23,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public List<UserRole> getAllUserRoles() {
+    public List<UserRole> findAllUserRoles() {
         return userRoleRepository.findAll();
     }
 
@@ -44,7 +44,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRole findByName(Roles role) {
+    public UserRole findByName(String role) {
         return userRoleRepository.findByName(role);
     }
 

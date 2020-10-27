@@ -6,9 +6,9 @@ import com.ratingapp.model.UserRole;
 import java.util.List;
 
 public interface UserRoleService {
-    List<UserRole> getAllUserRoles();
+    List<UserRole> findAllUserRoles();
     UserRole findById(Long id);
+    UserRole findByName(String role);
     UserRole createUserRole(UserRole userRole);
     Long count();
-    UserRole findByName(Roles role);
 }
