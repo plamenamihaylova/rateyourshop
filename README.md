@@ -2,11 +2,11 @@
 <p> Internet introduced online shopping and the online customer experience is evolving ever since. <p>
 <p> Although, the most popular online shoping platforms have ratings section where people can make reviews, 
 there are still many smaller online shops that are missing this feature which is so valuable for the customer. <p>
-"Rate your shop" system will provide custemomers with the ability to rate their online shopping experience.
-Rating data would be available for everyone, but only registered users would be able to write a review, rate and add an online shop.
-Admin users will manage registered users, shops and respond to suggestion for adding new online store in the system.
-The system will be developed using Spring 5 Application Development Framework.
-The backend will be implemented as a REST/JSON API using JSON data serialization.
+<p> "Rate your shop" system will provide custemomers with the ability to rate their online shopping experience. <p>
+<p> Rating data would be available for everyone, but only registered users would be able to write a review, rate and add an online shop. <p>
+<p> Admin users will manage registered users, shops and respond to suggestion for adding new online store in the system. <p>
+<p> The system will be developed using Spring 5 Application Development Framework.
+The backend will be implemented as a REST/JSON API using JSON data serialization. <p>
 
 # API Resources
 First Header | Second Header
