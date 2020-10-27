@@ -1,4 +1,4 @@
-# rate_your_shop
+# Rate your shop
 Internet introduced online shopping and the online customer experience is evolving ever since.
 Although, the most popular online shoping platforms have ratings section where people can make reviews, 
 there are still many smaller online shops that are missing this feature which is so valuable for the customer.
@@ -9,9 +9,11 @@ The system will be developed using Spring 5 Application Development Framework.
 The backend will be implemented as a REST/JSON API using JSON data serialization.
 
 # API Resources
-/api/v1/users - for administrators only - GET, POST
-/api/v1/users/{id} - GET, PUT, DELETE
-/api/v1/users/?name=firstName | ?username=username | ?role=role – for administrators only - GET, PUT, DELETE
+First Header | Second Header
+------------ | -------------
+/api/v1/users | GET, POST
+/api/v1/users/{id} | GET, PUT, DELETE
+/api/v1/users/?name=firstName; ?username=username; ?role=role; | GET, PUT, DELETE
 
 /api/v1/login - POST
 /api/v1/logout - POST
