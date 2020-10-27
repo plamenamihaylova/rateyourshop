@@ -5,7 +5,7 @@ there are still many smaller online shops that are missing this feature which is
 <p> "Rate your shop" system will provide custemomers with the ability to rate their online shopping experience. <br>
 Rating data would be available for everyone, but only registered users would be able to write a review, rate and add an online shop. <br>
 Admin users will manage registered users, shops and respond to suggestion for adding new online store in the system. </p>
-<p> The system is developed using <strong>Spring Boot 2.<strong><br>
+<p> The system is developed using <strong>Spring Boot 2<strong>. <br>
 The backend is implemented as a REST/JSON API using JSON data serialization. </p>
 
 # API Resources
