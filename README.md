@@ -14,17 +14,14 @@ First Header | Second Header
 /api/v1/users | GET, POST
 /api/v1/users/{id} | GET, PUT, DELETE
 /api/v1/users/?name=firstName; ?username=username; ?role=role; | GET, PUT, DELETE
-
-/api/v1/login - POST
-/api/v1/logout - POST
-
-/api/v1/shops - for administrators only - GET, POST
-/api/v1/shops/{id} - for administrators only - GET, PUT, DELETE
-/api/v1/shops/name/{name} - for administrators only - GET, PUT, DELETE
-/api/v1/shops/?category=category – GET
-
-/api/v1/reviews - GET, POST
-/api/v1/reviews/{id} - GET, PUT, DELETE
-/api/v1/reviews/?user=userId - GET
-/api/v1/shops/{shopId}/reviews/{reviewId}
-/api/v1/shops/{shopId}/reviews/{reviewValue}
+/api/v1/login | POST
+/api/v1/logout | POST
+/api/v1/shops | GET, POST
+/api/v1/shops/{id} | GET, PUT, DELETE
+/api/v1/shops/name/{name} | GET, PUT, DELETE
+/api/v1/shops/?category=category | GET
+/api/v1/reviews | GET, POST
+/api/v1/reviews/{id} | GET, PUT, DELETE
+/api/v1/reviews/?user=userId | GET
+/api/v1/shops/{shopId}/reviews/{reviewId} | GET
+/api/v1/shops/{shopId}/reviews/{reviewValue} | GET
