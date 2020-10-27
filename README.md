@@ -8,23 +8,22 @@ Admin users will manage registered users, shops and respond to suggestion for ad
 The system will be developed using Spring 5 Application Development Framework.
 The backend will be implemented as a REST/JSON API using JSON data serialization.
 
-API Resources
+# API Resources
 
-Users:
-/api/v1/users - for administrators only - GET, POST
-/api/v1/users/{id} - GET, PUT, DELETE
-/api/v1/users/?name=firstName | ?username=username | ?role=role – for administrators only - GET, PUT, DELETE
+# /api/v1/users - for administrators only - GET, POST
+# /api/v1/users/{id} - GET, PUT, DELETE
+# /api/v1/users/?name=firstName | ?username=username | ?role=role – for administrators only - GET, PUT, DELETE
 
-/api/v1/login - POST
-/api/v1/logout - POST
+# /api/v1/login - POST
+# /api/v1/logout - POST
 
-/api/v1/shops - for administrators only - GET, POST
-/api/v1/shops/{id} - for administrators only - GET, PUT, DELETE
-/api/v1/shops/name/{name} - for administrators only - GET, PUT, DELETE
-/api/v1/shops/?category=category – GET
+# /api/v1/shops - for administrators only - GET, POST
+# /api/v1/shops/{id} - for administrators only - GET, PUT, DELETE
+# /api/v1/shops/name/{name} - for administrators only - GET, PUT, DELETE
+# /api/v1/shops/?category=category – GET
 
-/api/v1/reviews - GET, POST
-/api/v1/reviews/{id} - GET, PUT, DELETE
-/api/v1/reviews/?user=userId - GET
-/api/v1/shops/{shopId}/reviews/{reviewId}
-/api/v1/shops/{shopId}/reviews/{reviewValue}
+# /api/v1/reviews - GET, POST
+# /api/v1/reviews/{id} - GET, PUT, DELETE
+# /api/v1/reviews/?user=userId - GET
+# /api/v1/shops/{shopId}/reviews/{reviewId}
+# /api/v1/shops/{shopId}/reviews/{reviewValue}
