@@ -9,7 +9,7 @@ there are still many smaller online shops that are missing this feature which is
 The backend will be implemented as a REST/JSON API using JSON data serialization. <p>
 
 # API Resources
-####URI | ####Methods
+URI | Methods
 ------------ | -------------
 /api/v1/users | GET, POST
 /api/v1/users/{id} | GET, PUT, DELETE
