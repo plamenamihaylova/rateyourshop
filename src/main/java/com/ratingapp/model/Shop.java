@@ -8,6 +8,7 @@ import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "shops",
@@ -48,12 +49,15 @@ public class Shop {
     private String url;
 
     @URL
+    @Size(min = 2)
     @Column(name = "shop_logo")
     private String logo;
 
+    @Size(min = 2)
     @Column(name = "shop_phone")
     private String phone;
 
+    @Size(min = 5)
     @Email(message = "must be valid email address")
     @Column(name = "shop_email")
     private String email;
