@@ -1,9 +1,11 @@
 package com.ratingapp.service.impl;
 
+import com.ratingapp.exception.InvalidEntityDataException;
 import com.ratingapp.exception.NotFoundEntityException;
 import com.ratingapp.model.User;
 import com.ratingapp.repository.UserRepository;
 import com.ratingapp.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,9 +33,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(User user) throws DataIntegrityViolationException {
         userRepository.saveAndFlush(user);
         return user;
+    }
+
+    @Override
+    public User updateUser(User user) throws InvalidEntityDataException, NotFoundEntityException{
+        findById(user.getId());
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User deleteUser(Long id) throws NotFoundEntityException{
+        User result = findById(id);
+        userRepository.delete(result);
+        return result;
     }
 
     @Override

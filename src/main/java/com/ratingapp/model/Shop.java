@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "shops",
-        uniqueConstraints = { @UniqueConstraint(columnNames = "shop_name", name = "uniqueNameConstraint")})
+        uniqueConstraints = { @UniqueConstraint(columnNames = "shop_name", name = "uniqueShopNameConstraint")})
 @Data
 @ToString
 @AllArgsConstructor
@@ -54,9 +54,4 @@ public class Shop {
     @Email(message = "must be valid email address")
     @Column(name = "shop_email")
     private String email;
-//
-//    @Autowired
-//    public void setCategory(Category category){
-//        this.category = category;
-//    }
 }

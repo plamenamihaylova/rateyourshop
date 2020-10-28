@@ -12,7 +12,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_ratings")
+@Table(name = "user_ratings",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","shop_id"}, name = "uniqueUserRatingConstraint")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

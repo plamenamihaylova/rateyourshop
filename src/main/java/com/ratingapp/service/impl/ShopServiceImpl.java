@@ -2,12 +2,12 @@ package com.ratingapp.service.impl;
 
 import com.ratingapp.exception.InvalidEntityDataException;
 import com.ratingapp.exception.NotFoundEntityException;
-import com.ratingapp.model.Category;
 import com.ratingapp.model.Shop;
 import com.ratingapp.repository.CategoryRepository;
 import com.ratingapp.repository.ShopRepository;
 import com.ratingapp.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +56,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop createShop(Shop shop) {
+    public Shop createShop(Shop shop) throws DataIntegrityViolationException {
         if (categoryRepository.findAll().stream().noneMatch(c -> c.getId() == shop.getCategory().getId() )){
             throw new NotFoundEntityException(String.format("Category with ID %d does not exist.", shop.getCategory().getId()));
         }
@@ -66,14 +66,14 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public Shop updateShop(Shop shop) throws InvalidEntityDataException, NotFoundEntityException {
-        Shop result = shopRepository.findById(shop.getId()).orElseThrow(() -> new NotFoundEntityException(String.format("Shop with ID %d does not exist.", shop.getId())));
+        findById(shop.getId());
         shopRepository.save(shop);
         return shop;
     }
 
     @Override
     public Shop deleteShop(Long id) {
-        Shop result = shopRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("Shop with ID %d does not exist.", id)));
+        Shop result = findById(id);
         shopRepository.delete(result);
         return result;
     }

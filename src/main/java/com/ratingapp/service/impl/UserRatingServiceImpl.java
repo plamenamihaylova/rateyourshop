@@ -9,6 +9,7 @@ import com.ratingapp.model.UserRating;
 import com.ratingapp.repository.*;
 import com.ratingapp.service.UserRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -43,7 +44,7 @@ public class UserRatingServiceImpl  implements UserRatingService {
 
     @Override
     public UserRating findById(Long id) {
-        return userRatingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("User rating with ID %d does not exist.", id)));
+        return userRatingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("Review with ID %d does not exist.", id)));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class UserRatingServiceImpl  implements UserRatingService {
     }
 
     @Override
-    public UserRating createUserRating(UserRating userRating) {
+    public UserRating createUserRating(UserRating userRating) throws DataIntegrityViolationException {
         if (shopRepository.findAll().stream().noneMatch(shop -> shop.getId().equals(userRating.getShop().getId()))){
             throw new NotFoundEntityException(String.format("Shop with ID %d does not exist.", userRating.getShop().getId()));
         }
@@ -80,21 +81,19 @@ public class UserRatingServiceImpl  implements UserRatingService {
 
     @Override
     public UserRating updateUserRating(UserRating userRating) throws InvalidEntityDataException, NotFoundEntityException {
-        UserRating result = userRatingRepository.findById(userRating.getId()).orElseThrow(() -> new NotFoundEntityException(String.format("Review with ID %d does not exist.", userRating.getId())));
-//
-//        if(!result.getCreated().equals(post.getCreated())) {
-//            throw new InvalidEntityDataException(String.format("Post creation date: %s can not be modified.",
-//                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(result.getCreated())));
-//        }
-//        post.setModified(LocalDateTime.now());
+        UserRating result = findById(userRating.getId());
 
-
+        if(!result.getCreated().equals(userRating.getCreated())) {
+            throw new InvalidEntityDataException(String.format("Review date of creation: %s cannot be modified.",
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(result.getCreated())));
+        }
+        userRating.setModified(LocalDateTime.now());
         return userRating;
     }
 
     @Override
     public UserRating deleteUserRating(Long id) {
-        UserRating result = userRatingRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("User rating with ID %d does not exist.", id)));
+        UserRating result = findById(id);
         userRatingRepository.delete(result);
         return result;
     }
