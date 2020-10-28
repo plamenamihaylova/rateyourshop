@@ -32,13 +32,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop findById(Long id) {
-        Shop shop =  shopRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("Shop with ID %d does not exist.", id)));
-        return shop;
+    public Shop findById(Long id) throws NotFoundEntityException {
+        return shopRepository.findById(id).orElseThrow(() -> new NotFoundEntityException(String.format("Shop with ID %d does not exist.", id)));
     }
 
     @Override
-    public List<Shop> findByName(String shopName) {
+    public List<Shop> findByName(String shopName) throws NotFoundEntityException {
         List<Shop> result = shopRepository.findByShopNameIgnoreCase(shopName);
         if(result == null || result.isEmpty()){
             throw new NotFoundEntityException(String.format("Shop with name '%s' does not exist.", shopName)) ;
@@ -47,7 +46,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> findByCategory(String categoryName) {
+    public List<Shop> findByCategory(String categoryName) throws NotFoundEntityException {
         List<Shop> result = shopRepository.findByCategory(categoryRepository.findByNameIgnoreCase(categoryName));
         if(result == null || result.isEmpty()){
             throw new NotFoundEntityException(String.format("Shop with category '%s' does not exist.", categoryName)) ;
@@ -56,25 +55,30 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop createShop(Shop shop) throws DataIntegrityViolationException {
-        if (categoryRepository.findAll().stream().noneMatch(c -> c.getId() == shop.getCategory().getId() )){
-            throw new NotFoundEntityException(String.format("Category with ID %d does not exist.", shop.getCategory().getId()));
-        }
+    public Shop createShop(Shop shop) throws DataIntegrityViolationException, InvalidEntityDataException {
+        areDependentPropertiesCorrect(shop);
         shopRepository.saveAndFlush(shop);
         return shop;
     }
 
     @Override
-    public Shop updateShop(Shop shop) throws InvalidEntityDataException, NotFoundEntityException {
+    public Shop updateShop(Shop shop) throws DataIntegrityViolationException, InvalidEntityDataException, NotFoundEntityException {
         findById(shop.getId());
+        areDependentPropertiesCorrect(shop);
         shopRepository.save(shop);
         return shop;
     }
 
     @Override
-    public Shop deleteShop(Long id) {
+    public Shop deleteShop(Long id) throws NotFoundEntityException {
         Shop result = findById(id);
         shopRepository.delete(result);
         return result;
+    }
+
+    private void areDependentPropertiesCorrect (Shop shop) {
+        if (categoryRepository.findAll().stream().noneMatch(category -> category.getId().equals(shop.getCategory().getId()))){
+            throw new NotFoundEntityException(String.format("Category with ID %d does not exist.", shop.getCategory().getId()));
+        }
     }
 }

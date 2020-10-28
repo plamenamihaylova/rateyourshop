@@ -6,6 +6,7 @@ import javax.persistence.*;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -29,6 +30,7 @@ public class Shop {
 
     @NonNull
     @NotNull(message = "Shop name is mandatory")
+    @NotEmpty
     @Column(name = "shop_name", unique = true)
     private String shopName;
 
@@ -40,6 +42,7 @@ public class Shop {
 
     @NonNull
     @NotNull(message = "Shop url is mandatory")
+    @NotEmpty
     @URL
     @Column(name = "shop_url")
     private String url;
