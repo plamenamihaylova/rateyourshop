@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "categories")
@@ -25,6 +26,7 @@ public class Category {
 
     @NonNull
     @NotNull
+    @Size(min = 3)
     @Column(name = "category_name")
     private String name;
 }
