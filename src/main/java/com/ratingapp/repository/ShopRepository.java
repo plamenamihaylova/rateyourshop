@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ShopRepository extends JpaRepository<Shop, Long> {
-    List<Shop> findByShopNameIgnoreCase(String shopName);
+    Shop findByShopNameIgnoreCase(String shopName);
     List<Shop> findByCategory(Category category);
 }

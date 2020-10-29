@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserRoleService {
     List<UserRole> findAllUserRoles();
     UserRole findById(Long id);
-    UserRole findByName(String role);
+    UserRole findByNameIgnoreCase(String role);
     UserRole createUserRole(UserRole userRole);
     Long count();
 }

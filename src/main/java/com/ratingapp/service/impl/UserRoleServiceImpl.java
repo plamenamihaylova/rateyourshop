@@ -44,8 +44,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRole findByName(String role) {
-        return userRoleRepository.findByName(role);
+    public UserRole findByNameIgnoreCase(String role) {
+        return userRoleRepository.findByNameIgnoreCase(role);
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -28,27 +29,32 @@ public class User {
 
     @NonNull
     @NotNull
+    @NotEmpty
     @Column(name = "username")
     private String username;
 
     @NonNull
     @NotNull
+    @NotEmpty
     @Column(name = "first_name")
     private String firstName;
 
     @NonNull
     @NotNull
+    @NotEmpty
     @Column(name = "last_name")
     private String lastName;
 
     @NonNull
     @NotNull
+    @NotEmpty
     @Email
     @Column(name = "user_email")
     private String email;
 
     @NonNull
     @NotNull
+    @NotEmpty
     @Column(name = "profile_picture")
     private String profilePicture;
 

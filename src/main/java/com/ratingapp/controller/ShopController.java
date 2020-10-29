@@ -37,7 +37,7 @@ public class ShopController {
     }
 
     @GetMapping("/name/{name}")
-    public List<Shop> findShopByName(@PathVariable String name) throws EntityNotFoundException {
+    public Shop findShopByName(@PathVariable String name) throws EntityNotFoundException {
         return shopService.findByName(name);
     }
 

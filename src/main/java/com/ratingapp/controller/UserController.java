@@ -27,7 +27,18 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers(@RequestParam(name = "firstName", required = false) String firstName,
+                                  @RequestParam(name = "lastName", required = false) String lastName,
+                                  @RequestParam(name = "role", required = false) String role){
+        if (firstName != null){
+           return userService.findByFirstNameIgnoreCase(firstName);
+        }
+        if (lastName != null){
+            return userService.findByLastNameIgnoreCase(lastName);
+        }
+        if (role != null){
+            return userService.findByUserRole(role);
+        }
         return userService.findAllUsers();
     }
 

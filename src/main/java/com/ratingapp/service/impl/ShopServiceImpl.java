@@ -37,9 +37,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> findByName(String shopName) throws NotFoundEntityException {
-        List<Shop> result = shopRepository.findByShopNameIgnoreCase(shopName);
-        if(result == null || result.isEmpty()){
+    public Shop findByName(String shopName) throws NotFoundEntityException {
+        Shop result = shopRepository.findByShopNameIgnoreCase(shopName);
+        if(result == null){
             throw new NotFoundEntityException(String.format("Shop with name '%s' does not exist.", shopName)) ;
         }
         return result;
@@ -74,6 +74,11 @@ public class ShopServiceImpl implements ShopService {
         Shop result = findById(id);
         shopRepository.delete(result);
         return result;
+    }
+
+    @Override
+    public Long count() {
+        return shopRepository.count();
     }
 
     private void areDependentPropertiesCorrect (Shop shop) {
