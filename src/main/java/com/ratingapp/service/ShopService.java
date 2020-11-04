@@ -7,13 +7,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 
-
 public interface ShopService {
 
     List<Shop> findAllShops();
     Shop findById(Long id) throws NotFoundEntityException;
-    Shop findByName(String shopName) throws NotFoundEntityException;
+    List<Shop> findByName(String shopName) throws NotFoundEntityException;
     List<Shop> findByCategory(String categoryName) throws NotFoundEntityException;
+    List<Shop> findByRatingAverage(Double ratingValue) throws NotFoundEntityException;
     Shop createShop(Shop shop) throws DataIntegrityViolationException, InvalidEntityDataException;
     Shop updateShop(Shop shop) throws DataIntegrityViolationException, InvalidEntityDataException, NotFoundEntityException;
     Shop deleteShop(Long id) throws NotFoundEntityException;

@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,9 +38,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop findByName(String shopName) throws NotFoundEntityException {
-        Shop result = shopRepository.findByShopNameIgnoreCase(shopName);
-        if(result == null){
+    public List<Shop> findByName(String shopName) throws NotFoundEntityException {
+        List<Shop> result = shopRepository.findByShopNameIgnoreCase(shopName);
+        if(result == null || result.isEmpty()){
             throw new NotFoundEntityException(String.format("Shop with name '%s' does not exist.", shopName)) ;
         }
         return result;
@@ -51,6 +52,22 @@ public class ShopServiceImpl implements ShopService {
         if(result == null || result.isEmpty()){
             throw new NotFoundEntityException(String.format("Shop with category '%s' does not exist.", categoryName)) ;
         }
+        return result;
+    }
+
+    @Override
+    public List<Shop> findByRatingAverage(Double ratingValue) throws NotFoundEntityException {
+        List<Shop> result = new ArrayList<>();
+        shopRepository.findAll().stream().forEach(shop -> {
+            if (shop.getRatingAverage() != null && shop.getRatingAverage() >= ratingValue){
+                result.add(shop);
+            }
+        });
+
+        if(result == null || result.isEmpty()){
+            throw new NotFoundEntityException(String.format("Shop with rating equal or greater than %.2f does not exist.", ratingValue));
+        }
+
         return result;
     }
 
