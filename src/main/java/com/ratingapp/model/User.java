@@ -1,11 +1,22 @@
 package com.ratingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
 @Entity
 @Table(name = "users",
@@ -14,8 +25,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-public class User {
+@JsonIgnoreProperties({ "authorities", "accountNonExpired", "accountNonLocked", "centralsNonExpired", "enabled"})
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,19 +40,26 @@ public class User {
 
     @NonNull
     @NotNull
-    @NotEmpty
+    @Size(min = 2, max = 50)
     @Column(name = "username")
     private String username;
 
+    @JsonProperty(access = WRITE_ONLY)
     @NonNull
     @NotNull
-    @NotEmpty
+    @Size(min=3)
+    @Column(name = "password")
+    private String password;
+
+    @NonNull
+    @NotNull
+    @Size(min = 2, max = 50)
     @Column(name = "first_name")
     private String firstName;
 
     @NonNull
     @NotNull
-    @NotEmpty
+    @Size(min = 2, max = 50)
     @Column(name = "last_name")
     private String lastName;
 
@@ -58,9 +76,68 @@ public class User {
     @Column(name = "profile_picture")
     private String profilePicture;
 
+    private boolean active = true;
+
     @NonNull
     @NotNull
     @ManyToOne (targetEntity = UserRole.class, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_role_id", nullable = false)
-    private UserRole userRole;
+    private UserRole role;
+
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<Roles> role = new HashSet<Roles>(Arrays.asList(Roles.ANONYMOUS));
+
+    public User (@NonNull @NotNull @Size(min = 2, max = 50) String username,
+                 @NonNull @NotNull @Size(min=3) String password,
+                 @NonNull @NotNull @Size(min = 2, max = 50) String firstName,
+                 @NonNull @NotNull @Size(min = 2, max = 50) String lastName,
+                 @NonNull @NotNull @Size(min = 5) @Email String email,
+                 @NonNull @NotNull @Size(min = 2) String profilePicture,
+                 //Set<UserRole> roles) {
+                 @NonNull @NotNull UserRole role) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.profilePicture = profilePicture;
+        //this.roles = roles;
+        this.role = role;
+
+
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+//        return role.stream().map(role -> new SimpleGrantedAuthority("ROLE " + role.toString())).collect(Collectors.toList());
+
+        List<UserRole> defaultUserRoles = Arrays.asList(
+                new UserRole(UserRole.USER),
+                new UserRole(UserRole.ADMIN)
+        );
+        return defaultUserRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return active;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return active;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return active;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
 }

@@ -10,11 +10,13 @@ import java.util.List;
 public interface UserService {
     List<User> findAllUsers();
     User findById(Long id) throws NotFoundEntityException;
+    User findByUsername(String username) throws NotFoundEntityException;
     List<User> findByFirstNameIgnoreCase(String firstName) throws NotFoundEntityException;
     List<User> findByLastNameIgnoreCase(String lastName) throws NotFoundEntityException;
     List<User> findByUserRole(String userRole) throws NotFoundEntityException;
     User createUser(User user) throws DataIntegrityViolationException, InvalidEntityDataException;
     User updateUser(User user) throws DataIntegrityViolationException, InvalidEntityDataException, NotFoundEntityException;
     User deleteUser(Long id)  throws NotFoundEntityException;
+    void validateLoggedUser(User user);
     Long count();
 }

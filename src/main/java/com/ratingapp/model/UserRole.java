@@ -4,14 +4,19 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user_roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
-public class UserRole {
+public class UserRole implements Serializable {
+
+    public static final String USER = "USER";
+    public static final String ADMIN = "ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -27,4 +32,9 @@ public class UserRole {
     @NotNull
     @Column(name = "user_role_name")
     private String name;
+
+    public UserRole (String name) {
+        this.name = name;
+    }
+
 }

@@ -7,6 +7,10 @@ import com.ratingapp.repository.UserRepository;
 import com.ratingapp.repository.UserRoleRepository;
 import com.ratingapp.service.UserService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) throws NotFoundEntityException {
+        User result =  userRepository.findByUsername(username);
+        if (result == null) {
+            throw new NotFoundEntityException(String.format("User with username %s does not exist.", username));
+        }
+        return result;
+    }
+
+    @Override
     public List<User> findByFirstNameIgnoreCase(String firstName) throws NotFoundEntityException {
         List<User> result = userRepository.findByFirstNameIgnoreCase(firstName);
         if (result == null || result.isEmpty()){
@@ -54,16 +67,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findByUserRole(String userRole) throws NotFoundEntityException {
-        List<User> result = userRepository.findByUserRole(userRoleRepository.findByNameIgnoreCase(userRole));
-        if (result == null || result.isEmpty()){
-            throw new NotFoundEntityException(String.format("User with role '%s' does not exist.", userRole));
-        }
-        return result;
+//        List<User> result = userRepository.findByUserRole(userRoleRepository.findByNameIgnoreCase(userRole));
+//        if (result == null || result.isEmpty()){
+//            throw new NotFoundEntityException(String.format("User with role '%s' does not exist.", userRole));
+//        }
+//        return result;
+        return null;
     }
 
     @Override
     public User createUser(User user) throws DataIntegrityViolationException, InvalidEntityDataException {
-        areDependentPropertiesCorrect(user);
+        //areDependentPropertiesCorrect(user);
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
         return user;
     }
@@ -71,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) throws DataIntegrityViolationException,InvalidEntityDataException, NotFoundEntityException {
         findById(user.getId());
-        areDependentPropertiesCorrect(user);
+        //areDependentPropertiesCorrect(user);
         userRepository.save(user);
         return user;
     }
@@ -84,13 +100,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void validateLoggedUser(User user) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = ((User) auth.getPrincipal()).getUsername();
+
+        if(!user.getUsername().equals(loggedInUsername)) {
+            throw new NotFoundEntityException(String.format("The user %s that is trying to update the resource is not the author", loggedInUsername));
+        }
+    }
+
+    @Override
     public Long count() {
         return userRepository.count();
     }
 
-    private void areDependentPropertiesCorrect(User user){
-        if (userRoleRepository.findAll().stream().noneMatch(userRole -> userRole.getId().equals(user.getUserRole().getId()))){
-            throw new NotFoundEntityException(String.format("User role with ID %d does not exist.", user.getUserRole().getId()));
-        }
-    }
+
+//    private void areDependentPropertiesCorrect(User user){
+//        if (Ro.findAll().stream().noneMatch(userRole -> userRole.getId().equals(user.getRole()))){
+//            throw new NotFoundEntityException(String.format("User role with ID %d does not exist.", user.getUserRole().getId()));
+//        }
+//    }
 }
+/*
+
+ */

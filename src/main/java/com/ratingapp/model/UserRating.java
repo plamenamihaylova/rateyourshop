@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,9 +33,10 @@ public class UserRating {
     @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
-    @ManyToOne (targetEntity = Rating.class, optional = false, fetch = FetchType.EAGER)
-    @JoinColumn(name = "rating_id", nullable = false)
-    private Rating rating;
+    @Min(1)
+    @Max(5)
+    @Column(name = "rating")
+    private int rating;
 
     @ManyToOne (targetEntity = User.class, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
@@ -53,15 +54,18 @@ public class UserRating {
     @Column(name = "receipt")
     private String receipt;
 
+    @Size(min = 2)
     @Column(name = "picture")
     private String picture;
 
+    @CreatedDate
     @PastOrPresent
-    @Column(name = "date_created")
-    private LocalDateTime created = LocalDateTime.now();
+    @Column(name = "date_created", updatable = false)
+    private LocalDateTime created;
 
+    @LastModifiedDate
     @PastOrPresent
     @Column(name = "date_modified")
-    private LocalDateTime modified = LocalDateTime.now();
+    private LocalDateTime modified;
 
 }

@@ -52,38 +52,43 @@ public class DataInit implements CommandLineRunner{
         }
 
         List<UserRole> defaultUserRoles = Arrays.asList(
-                new UserRole(Roles.ADMIN.toString()),
-                new UserRole(Roles.REGISTERED.toString()),
-                new UserRole(Roles.ANONYMOUS.toString()));
+                new UserRole(UserRole.USER),
+                new UserRole(UserRole.ADMIN)
+        );
         if (userRoleService.count() == 0){
             defaultUserRoles.forEach(userRoleService::createUserRole);
         }
 
         List<User> defaultUsers = Arrays.asList(
                 new User("john",
+                        "admin007",
                         "John",
                         "Smith",
                         "john.smith@gmail.com",
                         "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        userRoleService.findByNameIgnoreCase(Roles.ADMIN.toString())),
+                        //new HashSet<>(Arrays.asList(Roles.ADMIN))),
+                        //new HashSet<>(Arrays.asList(defaultUserRoles.get(1)))),
+                        userRoleService.findByNameIgnoreCase(UserRole.ADMIN)),
                 new User("stan",
+                        "registration",
                         "Stan",
                         "Satan",
                         "stan.satan@gmail.com",
                         "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        userRoleService.findByNameIgnoreCase(Roles.REGISTERED.toString())),
-                new User("sam",
-                        "Sam",
-                        "Smith",
-                        "sam.smith@gmail.com",
-                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        userRoleService.findByNameIgnoreCase(Roles.ANONYMOUS.toString())),
+                        //new HashSet<>(Arrays.asList(Roles.REGISTERED))),
+                        //new HashSet<>(Arrays.asList(defaultUserRoles.get(1)))),
+                        userRoleService.findByNameIgnoreCase(UserRole.USER)),
                 new User("jenifer",
+                        "registration",
                         "Jenifer",
                         "Wood",
                         "jenifer.wood@gmail.com",
                         "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        userRoleService.findByNameIgnoreCase(Roles.REGISTERED.toString())));
+                        //new HashSet<UserRole>(Arrays.asList(new UserRole(UserRole.ROLE_USER))))
+                        userRoleService.findByNameIgnoreCase(UserRole.USER))
+        );
+
+
         if (userService.count() == 0){
             defaultUsers.forEach(userService::createUser);
         }
