@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.ConstraintViolation;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -52,7 +53,7 @@ public class RateAppExceptionHandlers extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException exception){
         ErrorMessage errorMessage = new ErrorMessage(CONFLICT, DATA_INTEGRITY_EXCEPTION_ERROR_MESSAGE, new ArrayList<>());
-        errorMessage.getConstraintViolations().add(exception.getRootCause().getMessage());
+        errorMessage.getConstraintViolations().add(Objects.requireNonNull(exception.getRootCause()).getMessage());
         return ResponseEntity.badRequest().body(errorMessage);
     }
 
