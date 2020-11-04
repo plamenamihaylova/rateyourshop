@@ -2,7 +2,6 @@ package com.ratingapp.service.impl;
 
 import com.ratingapp.exception.NotFoundEntityException;
 import com.ratingapp.model.Category;
-import com.ratingapp.model.Shop;
 import com.ratingapp.repository.CategoryRepository;
 import com.ratingapp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAllCategories() {
+    public List<Category> findAllCategories() {
         return categoryRepository.findAll();
     }
 
@@ -45,6 +44,13 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(Category category) {
         categoryRepository.saveAndFlush(category);
         return category;
+    }
+
+    @Override
+    public Category deleteCategory(Long id) throws NotFoundEntityException {
+        Category result = findById(id);
+        categoryRepository.delete(result);
+        return result;
     }
 
     @Override
