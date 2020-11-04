@@ -4,6 +4,7 @@ import com.ratingapp.exception.InvalidEntityDataException;
 import com.ratingapp.exception.ValidationErrorsException;
 import com.ratingapp.model.Shop;
 import com.ratingapp.model.UserRating;
+import com.ratingapp.model.dto.ReviewerDTO;
 import com.ratingapp.model.dto.UserRatingDTO;
 import com.ratingapp.service.ShopService;
 import com.ratingapp.service.UserRatingService;

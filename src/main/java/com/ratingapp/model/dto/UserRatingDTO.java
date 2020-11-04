@@ -19,7 +19,7 @@ public class UserRatingDTO {
 
     @NonNull
     @NotNull
-    private ShopDTO shop;
+    private ReviewedDTO shop;
 
     @Min(1)
     @Max(5)
@@ -27,7 +27,7 @@ public class UserRatingDTO {
 
     @NonNull
     @NotNull
-    private UserDTO user;
+    private ReviewerDTO user;
 
     @NonNull
     @NotNull

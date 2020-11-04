@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({ "authorities", "accountNonExpired", "accountNonLocked", "centralsNonExpired", "enabled"})
+@JsonIgnoreProperties({ "active", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled"})
 public class User implements UserDetails {
 
     @Id
@@ -84,16 +84,12 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_role_id", nullable = false)
     private UserRole role;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    private Set<Roles> role = new HashSet<Roles>(Arrays.asList(Roles.ANONYMOUS));
-
     public User (@NonNull @NotNull @Size(min = 2, max = 50) String username,
                  @NonNull @NotNull @Size(min=3) String password,
                  @NonNull @NotNull @Size(min = 2, max = 50) String firstName,
                  @NonNull @NotNull @Size(min = 2, max = 50) String lastName,
                  @NonNull @NotNull @Size(min = 5) @Email String email,
                  @NonNull @NotNull @Size(min = 2) String profilePicture,
-                 //Set<UserRole> roles) {
                  @NonNull @NotNull UserRole role) {
         this.username = username;
         this.password = password;
@@ -101,19 +97,13 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.profilePicture = profilePicture;
-        //this.roles = roles;
         this.role = role;
-
-
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-//        return role.stream().map(role -> new SimpleGrantedAuthority("ROLE " + role.toString())).collect(Collectors.toList());
-
-        List<UserRole> defaultUserRoles = Arrays.asList(
+       List<UserRole> defaultUserRoles = Arrays.asList(
                 new UserRole(UserRole.USER),
                 new UserRole(UserRole.ADMIN)
         );

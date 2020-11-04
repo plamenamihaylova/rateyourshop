@@ -10,12 +10,15 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ReviewerDTO {
 
-    private Long id;
+    @NonNull
+    @NotNull
+    @Size(min = 2, max = 50)
+    private String firstName;
 
     @NonNull
     @NotNull
     @Size(min = 2, max = 50)
-    private String username;
+    private String lastName;
 
     @NonNull
     @NotNull

@@ -3,9 +3,13 @@ package com.ratingapp.controller;
 import com.ratingapp.exception.InvalidEntityDataException;
 import com.ratingapp.exception.ValidationErrorsException;
 import com.ratingapp.model.User;
+import com.ratingapp.model.dto.ReviewerDTO;
 import com.ratingapp.model.dto.UserDTO;
 import com.ratingapp.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeMap;
+import org.modelmapper.spi.DestinationSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
+import javax.print.attribute.standard.Destination;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -37,27 +42,27 @@ public class UserController {
                                   @RequestParam(name = "role", required = false) String role){
         if (firstName != null){
            return userService.findByFirstNameIgnoreCase(firstName)
-                   .stream().map(this::convertUserDTO)
+                   .stream().map(this::convertToUserDTO)
                    .collect(Collectors.toList());
         }
         if (lastName != null){
             return userService.findByLastNameIgnoreCase(lastName)
-                    .stream().map(this::convertUserDTO)
+                    .stream().map(this::convertToUserDTO)
                     .collect(Collectors.toList());
         }
         if (role != null){
             return userService.findByUserRole(role)
-                    .stream().map(this::convertUserDTO)
+                    .stream().map(this::convertToUserDTO)
                     .collect(Collectors.toList());
         }
         return userService.findAllUsers()
-                .stream().map(this::convertUserDTO)
+                .stream().map(this::convertToUserDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public UserDTO getUserById(@PathVariable Long id) throws EntityNotFoundException {
-        return convertUserDTO(userService.findById(id));
+        return convertToUserDTO(userService.findById(id));
     }
 
     @PostMapping
@@ -98,8 +103,9 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    private UserDTO convertUserDTO(User user) {
+    private UserDTO convertToUserDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
+
     }
 
     private User convertToUserEntity(UserDTO userDTO){

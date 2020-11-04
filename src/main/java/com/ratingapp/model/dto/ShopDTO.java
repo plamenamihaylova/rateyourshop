@@ -26,7 +26,7 @@ public class ShopDTO {
 
     @NonNull
     @NotNull
-    private CategoryDTO category;
+    private String categoryName;
 
     @NonNull
     @NotNull

@@ -38,43 +38,35 @@ public class ShopController {
     }
 
     @GetMapping
-    public List<ShopDTO> findAllShops(@RequestParam(name = "category", required = false) String category,
+    public List<ShopDTO> findAllShops(@RequestParam(name = "category", required = false) List<String> category,
                                       @RequestParam(name = "name", required = false) String name) throws EntityNotFoundException {
 
         if (category != null && name != null) {
             List<ShopDTO> shopByName = shopService.findByName(name)
                                         .stream().map(this::convertToShopDTO)
                                         .collect(Collectors.toList());
-            List<ShopDTO> shopByCategory = shopService.findByCategory(category)
-                                            .stream().map(this::convertToShopDTO)
-                                            .collect(Collectors.toList());
-            if (shopByName.stream().anyMatch(shop -> shop.getCategory().equals(category))) {
-                return shopByCategory;
-            }
-            else {
-                List<ShopDTO> result = new ArrayList<>();
-                shopByName.stream().forEach(shopDTO -> result.add(shopDTO)
-                );
-                shopByCategory.stream().forEach(shopDTO ->
-                        result.add(shopDTO)
-                );
-                return result;
-            }
 
-        } else if (category != null){
-            return shopService.findByCategory(category)
-                    .stream().map(this::convertToShopDTO)
-                    .collect(Collectors.toList());
+            List<ShopDTO> shopsByCategories = getShopsByCategories(category);
 
-        } else if (name != null) {
+            if (!shopsByCategories.contains(name)) {
+                shopsByCategories.addAll(shopByName);
+            }
+            return shopsByCategories;
+
+        }
+        else if (category != null){
+            return getShopsByCategories(category);
+
+        }
+        else if (name != null) {
             return shopService.findByName(name)
                     .stream().map(this::convertToShopDTO)
                     .collect(Collectors.toList());
-
-        } else{
-            return shopService.findAllShops()
-                    .stream().map(this::convertToShopDTO)
-                    .collect(Collectors.toList());
+        }
+        else{
+             return shopService.findAllShops()
+                     .stream().map(this::convertToShopDTO)
+                     .collect(Collectors.toList());
         }
     }
 
@@ -161,5 +153,11 @@ public class ShopController {
 
     private UserRating convertToUserRatingEntity(UserRatingDTO userRatingDTO) {
         return modelMapper.map(userRatingDTO, UserRating.class);
+    }
+
+    private List<ShopDTO> getShopsByCategories(List<String> category){
+        List<ShopDTO> result = new ArrayList<>();
+        category.forEach(c -> shopService.findByCategory(c).stream().map(this::convertToShopDTO).collect(Collectors.toList()).forEach(shop -> result.add(shop)));
+        return result;
     }
 }

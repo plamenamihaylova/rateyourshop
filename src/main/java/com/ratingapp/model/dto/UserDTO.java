@@ -1,7 +1,5 @@
 package com.ratingapp.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ratingapp.model.UserRole;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -13,7 +11,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-@JsonIgnoreProperties({ "authorities", "accountNonExpired", "accountNonLocked", "centralsNonExpired", "enabled"})
 public class UserDTO {
 
     private Long id;
@@ -45,6 +42,5 @@ public class UserDTO {
 
     @NonNull
     @NotNull
-    @NotEmpty
-    private UserRole userRole;
+    private String userRoleName;
 }
