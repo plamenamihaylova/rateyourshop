@@ -20,7 +20,6 @@ public class RateAppExceptionHandlers extends ResponseEntityExceptionHandler {
 
     public static final String VALIDATION_EXCEPTION_ERROR_MESSAGE = "Validation error found.";
     public static final String DATA_INTEGRITY_EXCEPTION_ERROR_MESSAGE = "Data integrity violation.";
-    public static final String NOT_ALLOWED_MULTIPLE_REVIEWS_ERROR_MESSAGE = "You are not allowed to write multiple reviews.";
     public static final Integer NOT_FOUND_STATUS_CODE = 404;
 
     @ExceptionHandler(NotFoundEntityException.class)
@@ -52,13 +51,9 @@ public class RateAppExceptionHandlers extends ResponseEntityExceptionHandler {
     @ResponseStatus(value = CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException exception){
-        ErrorMessage errorMessage = new ErrorMessage(CONFLICT,DATA_INTEGRITY_EXCEPTION_ERROR_MESSAGE, new ArrayList<>());
+        ErrorMessage errorMessage = new ErrorMessage(CONFLICT, DATA_INTEGRITY_EXCEPTION_ERROR_MESSAGE, new ArrayList<>());
         errorMessage.getConstraintViolations().add(exception.getRootCause().getMessage());
         return ResponseEntity.badRequest().body(errorMessage);
     }
 
-    @ExceptionHandler(NotAllowedMultipleReviewsException.class)
-    public ResponseEntity<ErrorMessage> handleNotAllowedOperationException(){
-        return ResponseEntity.status(NOT_ACCEPTABLE).body(new ErrorMessage(NOT_ACCEPTABLE, NOT_ALLOWED_MULTIPLE_REVIEWS_ERROR_MESSAGE));
-    }
 }
