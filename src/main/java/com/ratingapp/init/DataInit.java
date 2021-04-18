@@ -1,5 +1,6 @@
 package com.ratingapp.init;
 
+import com.ratingapp.enums.Enums;
 import com.ratingapp.model.*;
 import com.ratingapp.service.CategoryService;
 import com.ratingapp.service.UserRoleService;
@@ -30,67 +31,88 @@ public class DataInit implements CommandLineRunner{
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
-        List<Category> defaultCategories = Arrays.asList(
-                new Category("Food"),
-                new Category("Furniture"),
-                new Category("Home utilities"),
-                new Category("Technical supplies"),
-                new Category("Computers"),
-                new Category("Phone accessories"),
-                new Category("Book store"),
-                new Category("Shoes"),
-                new Category("Clothes"),
-                new Category("Online Service"),
-                new Category("Online Course"),
-                new Category("Course"),
-                new Category("Games"),
-                new Category("Jewelry"));
+        addDefaultCategories();
+
+        addDefaultUserRoles();
+
+        addDefaultUsers();
+    }
+
+    private void addDefaultCategories() {
+        List<Category> defaultCategories = generateDefaultCategories();
+
         if (categoryService.count() == 0){
             defaultCategories.forEach(categoryService::createCategory);
         }
+    }
 
-        List<UserRole> defaultUserRoles = Arrays.asList(
-                new UserRole(UserRole.USER),
-                new UserRole(UserRole.ADMIN)
+    private List<Category> generateDefaultCategories() {
+        return Arrays.asList(
+                new Category(Enums.Category.FOOD),
+                new Category(Enums.Category.FURNITURE),
+                new Category(Enums.Category.HOME_UTILITIES),
+                new Category(Enums.Category.TECHNICAL_SUPPLIES),
+                new Category(Enums.Category.COMPUTERS),
+                new Category(Enums.Category.PHONE_ACCESSORIES),
+                new Category(Enums.Category.BOOKS),
+                new Category(Enums.Category.SHOES),
+                new Category(Enums.Category.CLOTHES),
+                new Category(Enums.Category.JEWELRY),
+                new Category(Enums.Category.ONLINE_SERVICES),
+                new Category(Enums.Category.ONLINE_COURSES),
+                new Category(Enums.Category.COURSES),
+                new Category(Enums.Category.GAMES)
         );
+    }
+
+    private void addDefaultUserRoles() {
+        List<UserRole> defaultUserRoles = generateDefaultUserRoles();
+
         if (userRoleService.count() == 0){
             defaultUserRoles.forEach(userRoleService::createUserRole);
         }
+    }
 
-        List<User> defaultUsers = Arrays.asList(
+    private List<UserRole>  generateDefaultUserRoles() {
+        return Arrays.asList(
+                new UserRole(Enums.User.USER_ROLE_ADMIN),
+                new UserRole(Enums.User.USER_ROLE_USER)
+        );
+    }
+
+    private void addDefaultUsers() {
+        List<User> defaultUsers = generateDefaultUsers();
+
+        if (userService.count() == 0) {
+            defaultUsers.forEach(userService::createUser);
+        }
+    }
+
+    private List<User> generateDefaultUsers() {
+        return Arrays.asList(
                 new User("john",
                         "admin007",
                         "John",
                         "Smith",
                         "john.smith@gmail.com",
-                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        //new HashSet<>(Arrays.asList(Roles.ADMIN))),
-                        //new HashSet<>(Arrays.asList(defaultUserRoles.get(1)))),
-                        userRoleService.findByNameIgnoreCase(UserRole.ADMIN)),
+                        Enums.User.DEFAULT_PROFILE_PICTURE,
+                        userRoleService.findByNameIgnoreCase(Enums.User.USER_ROLE_ADMIN)),
                 new User("stan",
                         "registration",
                         "Stan",
-                        "Satan",
-                        "stan.satan@gmail.com",
-                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        //new HashSet<>(Arrays.asList(Roles.REGISTERED))),
-                        //new HashSet<>(Arrays.asList(defaultUserRoles.get(1)))),
-                        userRoleService.findByNameIgnoreCase(UserRole.USER)),
+                        "Doe",
+                        "stan.doe@gmail.com",
+                        Enums.User.DEFAULT_PROFILE_PICTURE,
+                        userRoleService.findByNameIgnoreCase(Enums.User.USER_ROLE_USER)),
                 new User("jenifer",
                         "registration",
                         "Jenifer",
                         "Wood",
                         "jenifer.wood@gmail.com",
-                        "https://grandimageinc.com/wp-content/uploads/2015/09/icon-user-default.png",
-                        //new HashSet<UserRole>(Arrays.asList(new UserRole(UserRole.ROLE_USER))))
-                        userRoleService.findByNameIgnoreCase(UserRole.USER))
+                        Enums.User.DEFAULT_PROFILE_PICTURE,
+                        userRoleService.findByNameIgnoreCase(Enums.User.USER_ROLE_USER))
         );
-
-
-        if (userService.count() == 0){
-            defaultUsers.forEach(userService::createUser);
-        }
     }
 }
